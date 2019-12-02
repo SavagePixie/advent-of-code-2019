@@ -1,8 +1,11 @@
+'use strict'
+
 const express = require('express')
 const fs = require('fs')
 
 const solvers = {
-    '01': require('./src/dayOne')
+    '01': require('./src/dayOne'),
+    '02': require('./src/dayTwo'),
 }
 
 const regEx = /\d{2}/
@@ -15,4 +18,4 @@ app.get('/:day', (req, res) => {
     res.json(solvers[req.params.day](input))
 })
 
-app.listen(8000, () => console.log('Listening on port 8000'))
+app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`))
