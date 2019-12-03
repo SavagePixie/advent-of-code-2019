@@ -14,7 +14,8 @@ const regEx = /\d{2}/
 const app = express()
 
 app.get('/:day', (req, res) => {
-    if (!regEx.test(req.params.day)) res.send('You must give a valid date.')
+    if (!regEx.test(req.params.day)) return res.send('You must give a valid date.')
+    if (solvers[req.params.day] == undefined) return res.send('No solution was found for that day.')
     const input = fs.readFileSync(`./input/day-${req.params.day}.txt`).toString()
     res.json(solvers[req.params.day](input))
 })
