@@ -6,7 +6,8 @@ const fs = require('fs')
 const solvers = {
     '01': require('./src/dayOne'),
     '02': require('./src/dayTwo'),
-    '03': require('./src/dayThree')
+    '03': require('./src/dayThree'),
+    '04': require('./src/dayFour'),
 }
 
 const regEx = /\d{2}/
