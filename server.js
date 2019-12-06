@@ -9,6 +9,7 @@ const solvers = {
     '03': require('./src/dayThree'),
     '04': require('./src/dayFour'),
     '05': require('./src/dayFive'),
+    '06': require('./src/daySix'),
 }
 
 const regEx = /\d{2}/
