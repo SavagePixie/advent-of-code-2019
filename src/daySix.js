@@ -1,6 +1,6 @@
 const calculateOrbits = (input, centre, orbits=0) => {
     const objects = input.filter(x => x.split(')')[0] == centre)
-    return objects. length == 0
+    return objects.length == 0
         ? orbits
         : objects.reduce((a, b) => a + calculateOrbits(input, b.split(')')[1], orbits + 1), orbits)
 }
