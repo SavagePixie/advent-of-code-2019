@@ -1,27 +1,8 @@
-const findElement = (input, tag) => input.filter(x => x.split(')')[1] == tag)
-
-const getOrbits = (input, element, orbits=1) => {
-    if (!getOrbits.checkedOrbits) getOrbits.checkedOrbits = {}
-
-    const [ centre, object ] = element.split(')')
-    if (centre == 'COM') {
-        getOrbits.checkedOrbits[object] = 1
-        return orbits
-    }
-    if (getOrbits.checkedOrbits.hasOwnProperty(centre)) {
-        getOrbits.checkedOrbits[object] = getOrbits.checkedOrbits[centre] + 1
-        return orbits + getOrbits.checkedOrbits[centre]
-    }
-    const [ nextObject ] = findElement(input, centre)
-    return getOrbits(input, nextObject, orbits + 1)
-}
-
-const getOrbitChain = (input, element, chain=[]) => {
-    const [ centre, object ] = element.split(')')
-    const newChain = chain.concat(centre)
-    if (centre == 'COM') return newChain
-    const [ nextObject ] = findElement(input, centre)
-    return getOrbitChain(input, nextObject, newChain)
+const calculateOrbits = (input, centre, orbits=0) => {
+    const objects = input.filter(x => x.split(')')[0] == centre)
+    return objects. length == 0
+        ? orbits
+        : objects.reduce((a, b) => a + calculateOrbits(input, b.split(')')[1], orbits + 1), orbits)
 }
 
 const calculateTransfers = (input, origin, destination) => {
@@ -31,9 +12,19 @@ const calculateTransfers = (input, origin, destination) => {
     return fromYou.indexOf(commonObject) + fromDest.indexOf(commonObject) - 2
 }
 
+const findElement = (input, tag) => input.filter(x => x.split(')')[1] == tag)
+
+const getOrbitChain = (input, element, chain=[]) => {
+    const [ centre, object ] = element.split(')')
+    const newChain = chain.concat(centre)
+    if (centre == 'COM') return newChain
+    const [ nextObject ] = findElement(input, centre)
+    return getOrbitChain(input, nextObject, newChain)
+}
+
 module.exports = input => {
     const data = input.split('\n')
-    const partOne = data.reduce((a, b) => a + getOrbits(data, b), 0)
+    const partOne = calculateOrbits(data, 'COM')
     const partTwo = calculateTransfers(data, 'YOU', 'SAN')
     return({ partOne, partTwo })
 }
